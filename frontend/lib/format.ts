@@ -1,0 +1,1 @@
+export const money = (n: number) => '\u20B9' + n.toLocaleString('en-IN');

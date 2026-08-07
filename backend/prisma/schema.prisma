@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TABLE 1: ek watch
+model Product {
+  id         String      @id
+  cat        String
+  type       String
+  name       String
+  price      Int
+  quality    String
+  stock      Int
+  image      String      @default("")
+  look       Json
+  colors     Json
+  orderItems OrderItem[]
+}
+
+// TABLE 2: customer ka order
+model Order {
+  id        Int         @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String      @default("")
+  address   String
+  total     Int
+  createdAt DateTime    @default(now())
+  items     OrderItem[]
+}
+
+// TABLE 3: order ke andar ki har line
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  name      String
+  color     String
+  price     Int
+  qty       Int
+}
